@@ -1,0 +1,19 @@
+apiVersion: skaffold/v2beta22
+kind: Config
+metadata:
+  name: graceful-demo
+build:
+  artifacts:
+  - image: server
+    context: server
+    docker:
+      dockerfile: Dockerfile
+deploy:
+  kustomize:
+    paths:
+    - deploy
+
+portForward:
+  - resourceType: service
+    resourceName: server
+    port: 4000

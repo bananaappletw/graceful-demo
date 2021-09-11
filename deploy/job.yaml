@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: curl
+spec:
+  template:
+    spec:
+      containers:
+        - name: curl
+          image: curlimages/curl
+          command:
+            - /bin/sh
+            - -c
+            - |
+              while true
+              do
+                curl --retry 5 --retry-connrefused -s -w "\n%{http_code}: %{time_total}\n" http://server:4000 2>&1 | cat &
+                sleep 1
+              done
+      restartPolicy: Never
